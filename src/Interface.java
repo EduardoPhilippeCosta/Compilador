@@ -1,7 +1,9 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -22,13 +24,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 
 public class Interface {
 
 	private JFrame frame;
-	private JFrame frameFileChooser;
 	private JFileChooser selecionador;
 	private JTextArea textAreaCaixaDeTexto;
 	private String caminhoArquivoAberto = "Arquivo não salvo";
@@ -68,42 +68,33 @@ public class Interface {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension frameMin = new Dimension(900,600);
 	    frame.setMinimumSize(frameMin);
-	    frame.getContentPane().setLayout(null);
+	    frame.getContentPane().setLayout(new BorderLayout(0, 0));
 	    
 	    JToolBar toolBar = new JToolBar();
 	    toolBar.setBounds(0, 0, 156, 547);
 	    toolBar.setOrientation(SwingConstants.VERTICAL);
-	    frame.getContentPane().add(toolBar);
+	    frame.getContentPane().add(toolBar, BorderLayout.WEST);
 	    Dimension toolBarMin = new Dimension(150,500);
 	    toolBar.setMinimumSize(toolBarMin);
-
-	    JPanel panel = new JPanel();
-	    panel.setBorder(new EmptyBorder(0, 10, 0, 10));
-	    panel.setBounds(0, 0, 10, 10);
-	    toolBar.add(panel);
-	    panel.setLayout(new BorderLayout(0, 0));
 	    
-	    JPanel panelToolBar = new JPanel();
-	    panel.add(panelToolBar, BorderLayout.CENTER);
-	    
-	    int width100 = toolBar.getWidth() - (panel.getWidth() + panel.getWidth())-4;
+	    int width100 = toolBar.getWidth() - 4;
 	    int y = 5; 
 
-	    y = createJButton(panelToolBar, width100, y, "Novo [CTRL-N]", "/imgs/new_small.png");
-	    y = createJButton(panelToolBar, width100, y, "Abrir [CTRL-O]", "/imgs/open_small.png");
-	    y = createJButton(panelToolBar, width100, y, "Salvar [CTRL-S]", "/imgs/save_small.png");
-	    y = createJButton(panelToolBar, width100, y, "Copiar [CTRL-C]", "/imgs/copy_small.png");
-	    y = createJButton(panelToolBar, width100, y, "Colar [CTRL-V]", "/imgs/copy_small.png");
-	    y = createJButton(panelToolBar, width100, y, "Recortar [CTRL-X]", "/imgs/cut_small.png");
-	    y = createJButton(panelToolBar, width100, y, "Compilar [F7]", "/imgs/compile_small.png");
-	    y = createJButton(panelToolBar, width100, y, "Equipe [F1]", "/imgs/team_small.png");
-	    
-	    panelToolBar.setLayout(null);
-	    panel.add(panelToolBar);
+	    JPanel panel = new JPanel();
+	    panel.setLayout(new GridLayout(8, 1));
+	    y = createJButton(panel, width100, y, "Novo [CTRL-N]", "/imgs/new_small.png");
+	    y = createJButton(panel, width100, y, "Abrir [CTRL-O]", "/imgs/open_small.png");
+	    y = createJButton(panel, width100, y, "Salvar [CTRL-S]", "/imgs/save_small.png");
+	    y = createJButton(panel, width100, y, "Copiar [CTRL-C]", "/imgs/copy_small.png");
+	    y = createJButton(panel, width100, y, "Colar [CTRL-V]", "/imgs/copy_small.png");
+	    y = createJButton(panel, width100, y, "Recortar [CTRL-X]", "/imgs/cut_small.png");
+	    y = createJButton(panel, width100, y, "Compilar [F7]", "/imgs/compile_small.png");
+	    y = createJButton(panel, width100, y, "Equipe [F1]", "/imgs/team_small.png");
+	    toolBar.add(panel);
 	    
 	    lblArquivo = new JLabel(caminhoArquivoAberto);
 	    lblArquivo.setBounds(0, 547, 884, 14);
-	    frame.getContentPane().add(lblArquivo);
+	    frame.getContentPane().add(lblArquivo, BorderLayout.SOUTH);
 	    Dimension labelMin = new Dimension(900,25);
 	    lblArquivo.setMinimumSize(labelMin);
 	    
@@ -111,7 +102,7 @@ public class Interface {
 	    splitPane.setBounds(143, 0, 741, 547);
 	    splitPane.setResizeWeight(0.8);
 	    splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-	    frame.getContentPane().add(splitPane);
+	    frame.getContentPane().add(splitPane, BorderLayout.CENTER);
 	    
 	    textAreaCaixaDeTexto = new JTextArea();
 	    splitPane.setLeftComponent(textAreaCaixaDeTexto);  
@@ -126,8 +117,6 @@ public class Interface {
 	    splitPane.add(scrollConsole);
 	    
 	    
-		frameFileChooser = new JFrame();
-		frameFileChooser.setVisible(false);
 		selecionador = new JFileChooser();
 		selecionador.setAcceptAllFileFilterUsed(false);
         FileFilter filter = new FileFilter() {
@@ -154,14 +143,14 @@ public class Interface {
         };
 		selecionador.setFileFilter(filter);
 		selecionador.setVisible(true);
-		frameFileChooser.getContentPane().add(selecionador);
 	}
 
-	private int createJButton(JPanel panelToolBar, int width100, int y, String legenda, String urlArquivo) {
+	private int createJButton(JPanel panel, int width100, int y, String legenda, String urlArquivo) {
 		JButton btn = new JButton(legenda, new ImageIcon(this.getClass().getResource(urlArquivo)));
 		btn.setHorizontalAlignment(SwingConstants.LEADING);
 	    btn.setBounds(0, y, width100, 30);
 	    btn.setFont(new Font("Arial", Font.PLAIN, 9));
+	    btn.setBackground(Color.white);
 	    if(legenda.contains("Abrir")) {
 	    	btn.addActionListener(new EventoAbrirArquivo());
 	    } else if(legenda.contains("Salvar")) {
@@ -174,7 +163,7 @@ public class Interface {
 	    	btn.addActionListener(new EventoMostrarEquipe());
 	    }
 	    
-	    panelToolBar.add(btn);
+	    panel.add(btn);
 	    return y + 40;
 	}
 	
