@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -22,6 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileFilter;
 
 public class Interface {
 
@@ -31,6 +33,8 @@ public class Interface {
 	private JTextArea textAreaCaixaDeTexto;
 	private String caminhoArquivoAberto = "Arquivo não salvo";
 	private JLabel lblArquivo;
+	private JTextArea textAreaMensagens;
+	private String[] accpetExtensions = {"txt"};
 
 	/**
 	 * Launch the application.
@@ -94,7 +98,6 @@ public class Interface {
 	    y = createJButton(panelToolBar, width100, y, "Compilar [F7]", "/imgs/compile_small.png");
 	    y = createJButton(panelToolBar, width100, y, "Equipe [F1]", "/imgs/team_small.png");
 	    
-	    
 	    panelToolBar.setLayout(null);
 	    panel.add(panelToolBar);
 	    
@@ -116,17 +119,42 @@ public class Interface {
 	    JScrollPane scrollCaixaDeTexto = new JScrollPane (textAreaCaixaDeTexto, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	    splitPane.add(scrollCaixaDeTexto);
 	    
-	    JTextArea textAreaConsole = new JTextArea();
-	    textAreaConsole.setEditable(false);
-	    splitPane.setRightComponent(textAreaConsole);
-	    JScrollPane scrollConsole = new JScrollPane (textAreaConsole, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+	    textAreaMensagens = new JTextArea();
+	    textAreaMensagens.setEditable(false);
+	    splitPane.setRightComponent(textAreaMensagens);
+	    JScrollPane scrollConsole = new JScrollPane (textAreaMensagens, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	    splitPane.add(scrollConsole);
+	    
 	    
 		frameFileChooser = new JFrame();
 		frameFileChooser.setVisible(false);
 		selecionador = new JFileChooser();
+		selecionador.setAcceptAllFileFilterUsed(false);
+        FileFilter filter = new FileFilter() {
+        	@Override
+        	public boolean accept(File file) {
+        		if (file.isDirectory()) {
+        			return true;
+        		} else {
+        			String path = file.getAbsolutePath().toLowerCase();
+        			for (int i = 0, n = accpetExtensions.length; i < n; i++) {
+        				String extension = accpetExtensions[i];
+        				if ((path.endsWith(extension) && (path.charAt(path.length() - extension.length() - 1)) == '.')) {
+        					return true;
+        				}
+        			}
+        		}
+        		return false;
+        	}
+
+			@Override
+			public String getDescription() {
+				return ".txt";
+			}
+        };
+		selecionador.setFileFilter(filter);
 		selecionador.setVisible(true);
-		frameFileChooser.add(selecionador);
+		frameFileChooser.getContentPane().add(selecionador);
 	}
 
 	private int createJButton(JPanel panelToolBar, int width100, int y, String legenda, String urlArquivo) {
@@ -135,65 +163,107 @@ public class Interface {
 	    btn.setBounds(0, y, width100, 30);
 	    btn.setFont(new Font("Arial", Font.PLAIN, 9));
 	    if(legenda.contains("Abrir")) {
-	    	abrirArquivo(btn);
-	    }else if(legenda.contains("Salvar")) {
-	    	salvarArquivo(btn);
+	    	btn.addActionListener(new EventoAbrirArquivo());
+	    } else if(legenda.contains("Salvar")) {
+	    	btn.addActionListener(new EventoSalvarArquivo());
+	    } else if(legenda.contains("Novo")) {
+	    	btn.addActionListener(new EventoCriarArquivo()); 
+	    }else if(legenda.contains("Compilar")) {
+		    	btn.addActionListener(new EventoCompilar());
+	    } else if(legenda.contains("Equipe")) {
+	    	btn.addActionListener(new EventoMostrarEquipe());
 	    }
-	    	
+	    
 	    panelToolBar.add(btn);
 	    return y + 40;
 	}
 	
-	private void abrirArquivo(JButton btn) {
-	    btn.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	    		int i = selecionador.showDialog(frame, "Abrir");
-	    		if(JFileChooser.APPROVE_OPTION == i) {
-	    			StringBuilder textoCompleto = new StringBuilder();
-	    			try {
-	    				File file = selecionador.getSelectedFile();
-		    			caminhoArquivoAberto = file.getAbsolutePath();
-	    		        Scanner myReader = new Scanner(file);
-	    		        while (myReader.hasNextLine()) {
-	    		        	textoCompleto.append(myReader.nextLine()).append("\n");
-	    		        }
-	    		        myReader.close();
-	    			} catch (FileNotFoundException ex) {
-	    				System.out.println("An error occurred.");
-	    				ex.printStackTrace();
-	    			}
-	    			textAreaCaixaDeTexto.setText(textoCompleto.toString());
-	    			lblArquivo.setText(caminhoArquivoAberto);
-	    		}
-	        }
-	    });
+	private class EventoCompilar implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			textAreaMensagens.setText(textAreaMensagens.getText()+"\ncompilação de programas ainda não foi implementada");
+		}
 	}
 	
-	private void salvarArquivo(JButton btn) {
-	    btn.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
+	private class EventoAbrirArquivo implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+    		if(validaManipulacaoArquivo(selecionador.showDialog(frame, "Abrir"))) {
+    			StringBuilder textoCompleto = new StringBuilder();
     			try {
-    				if(caminhoArquivoAberto.equals("Arquivo não salvo")) {
-    					int i = selecionador.showDialog(frame, "Salvar");
-    		    		if(JFileChooser.APPROVE_OPTION == i) {
-    		    			caminhoArquivoAberto = selecionador.getSelectedFile().getAbsolutePath();
-            				FileWriter file = new FileWriter(caminhoArquivoAberto);
-            				file.write(textAreaCaixaDeTexto.getText());
-            				file.close();
-        	    			lblArquivo.setText(caminhoArquivoAberto);
-    		    		}
-    				} else {
+    				File file = selecionador.getSelectedFile();
+    				if(!file.exists()) {
+    					JOptionPane.showMessageDialog(frame, "Selecione um arquivo existente por favor."); 
+    				}else {
+        		        Scanner myReader = new Scanner(file);
+        		        while (myReader.hasNextLine()) {
+        		        	textoCompleto.append(myReader.nextLine()).append("\n");
+        		        }
+        		        myReader.close();
+            			textAreaCaixaDeTexto.setText(textoCompleto.toString());
+            			lblArquivo.setText(caminhoArquivoAberto);
+        			}
+    			} catch (FileNotFoundException ex) {
+    				ex.printStackTrace();
+    			}
+    		}
+		}
+	}
+	
+	private class EventoMostrarEquipe implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			textAreaMensagens.setText(textAreaMensagens.getText()+"\nMembros da equipe:\nEduardo Philippe Costa\nLucas Reichert\nVítor Gabriel Eduardo\n");
+		}
+	}
+	
+	private class EventoSalvarArquivo implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				if(caminhoArquivoAberto.equals("Arquivo não salvo")) {
+		    		if(validaManipulacaoArquivo(selecionador.showDialog(frame, "Salvar"))) {
         				FileWriter file = new FileWriter(caminhoArquivoAberto);
         				file.write(textAreaCaixaDeTexto.getText());
         				file.close();
-    				}
-    			} catch (IOException ex) {
-    				System.out.println("An error occurred.");
-    				ex.printStackTrace();
-    			}
-	        }
-	    });
+    	    			lblArquivo.setText(caminhoArquivoAberto);
+		    		}
+				} else {
+    				FileWriter file = new FileWriter(caminhoArquivoAberto);
+    				file.write(textAreaCaixaDeTexto.getText());
+    				file.close();
+				}
+    			lblArquivo.setText(caminhoArquivoAberto);
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}		
+		}
+	}
+	
+	private class EventoCriarArquivo implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			textAreaCaixaDeTexto.setText("");
+			textAreaMensagens.setText("");
+			lblArquivo.setText(caminhoArquivoAberto);
+		}
+	}
+	
+	private boolean validaManipulacaoArquivo(int resultado) {
+		if(JFileChooser.APPROVE_OPTION == resultado) {
+			String extensaoArquivo = selecionador.getFileFilter().getDescription();
+			String path = selecionador.getSelectedFile().getAbsolutePath();
+			if(!path.endsWith(extensaoArquivo)) {
+				path+=extensaoArquivo;
+			}
+			caminhoArquivoAberto = path;
+			return true;
+		}
+		return false;
 	}
 }
