@@ -5,14 +5,17 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -23,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileFilter;
 
@@ -77,7 +81,8 @@ public class Interface {
 	    toolBar.setMinimumSize(new Dimension(150,500));
 	    
 	    int width100 = toolBar.getWidth() - 4;
-	    int y = 5; 
+	    int y = 5;
+	  
 
 	    JPanel panel = new JPanel();
 	    panel.setLayout(new GridLayout(8, 1));
@@ -92,6 +97,8 @@ public class Interface {
 	    y = createJButton(panel, width100, y, "Compilar [F7]", "/imgs/compile_small.png");
 	    y = createJButton(panel, width100, y, "Equipe [F1]", "/imgs/team_small.png");
 	    toolBar.add(panel);
+	    
+	    criarActionMap(panel);
 	    
 	    lblArquivo = new JLabel(caminhoArquivoAberto);
 	    lblArquivo.setBounds(0, 547, 900, 25);
@@ -153,7 +160,7 @@ public class Interface {
 	    btn.setFont(new Font("Arial", Font.PLAIN, 9));
 	    btn.setBackground(Color.white);
 	    if(legenda.contains("Abrir")) {
-	    	btn.addActionListener(new EventoAbrirArquivo());
+	    	btn.addActionListener(new EventoAbrirArquivo());	
 	    } else if(legenda.contains("Salvar")) {
 	    	btn.addActionListener(new EventoSalvarArquivo());
 	    } else if(legenda.contains("Novo")) {
@@ -162,13 +169,25 @@ public class Interface {
 		    	btn.addActionListener(new EventoCompilar());
 	    } else if(legenda.contains("Equipe")) {
 	    	btn.addActionListener(new EventoMostrarEquipe());
-	    }
+	    } else if (legenda.contains("Copiar")) {
+	    	btn.addActionListener(new EventoCopiar());
+	    } else if (legenda.contains("Recortar")) {
+	    	btn.addActionListener(new EventoRecortar());
+	    } else if (legenda.contains("Colar")) {
+	    	btn.addActionListener(new EventoColar());
+	    } 
 	    
 	    panel.add(btn);
 	    return y + 40;
 	}
 	
-	private class EventoCompilar implements ActionListener {
+	
+	private class EventoCompilar extends AbstractAction {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -176,7 +195,12 @@ public class Interface {
 		}
 	}
 	
-	private class EventoAbrirArquivo implements ActionListener {
+	private class EventoAbrirArquivo extends AbstractAction {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -202,7 +226,12 @@ public class Interface {
 		}
 	}
 	
-	private class EventoMostrarEquipe implements ActionListener {
+	private class EventoMostrarEquipe extends AbstractAction {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -210,7 +239,12 @@ public class Interface {
 		}
 	}
 	
-	private class EventoSalvarArquivo implements ActionListener {
+	private class EventoSalvarArquivo extends AbstractAction {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -234,13 +268,58 @@ public class Interface {
 		}
 	}
 	
-	private class EventoCriarArquivo implements ActionListener {
+	private class EventoCriarArquivo extends AbstractAction {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			textAreaCaixaDeTexto.setText("");
 			textAreaMensagens.setText("");
-			lblArquivo.setText(caminhoArquivoAberto);
+			caminhoArquivoAberto = "Arquivo não salvo";
+			lblArquivo.setText("Arquivo não salvo");
+		}
+	}
+	
+	private class EventoCopiar extends AbstractAction {
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			copiar();
+		}
+	}
+	
+	private class EventoRecortar extends AbstractAction {
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			recortar();
+		}
+	}
+	
+	private class EventoColar extends AbstractAction {
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			colar();
 		}
 	}
 	
@@ -255,5 +334,42 @@ public class Interface {
 			return true;
 		}
 		return false;
+	}
+	
+	private void copiar() {
+		textAreaCaixaDeTexto.copy();
+	}
+	
+	private void recortar() {
+		textAreaCaixaDeTexto.cut();
+	}
+	
+	private void colar() {
+		textAreaCaixaDeTexto.paste();
+	}
+	
+	private void criarActionMap(JPanel panel) {
+		ActionMap acoes = panel.getActionMap();
+		acoes.put("btSalvar", new EventoSalvarArquivo());
+		acoes.put("btNovo", new EventoCriarArquivo());
+		acoes.put("btAbrir", new EventoAbrirArquivo());
+		acoes.put("btCopiar", new EventoCopiar());
+		acoes.put("btColar", new EventoColar());
+		acoes.put("btRecortar", new EventoRecortar());
+		acoes.put("btCompilar", new EventoCompilar());
+		acoes.put("btEquipe", new EventoMostrarEquipe());
+		
+		panel.setActionMap(acoes);
+		InputMap atalhos = panel.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW);
+		
+		atalhos.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), "btNovo");
+		atalhos.put(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK), "btAbrir");
+		atalhos.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), "btSalvar");
+		atalhos.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK), "btCopiar");
+		atalhos.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK), "btColar");
+		atalhos.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK), "btRecortar");
+
+		atalhos.put(KeyStroke.getKeyStroke("F7"), "btCompilar");
+		atalhos.put(KeyStroke.getKeyStroke("F1"), "btEquipe");
 	}
 }
