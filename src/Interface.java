@@ -74,14 +74,15 @@ public class Interface {
 	    toolBar.setBounds(0, 0, 156, 547);
 	    toolBar.setOrientation(SwingConstants.VERTICAL);
 	    frame.getContentPane().add(toolBar, BorderLayout.WEST);
-	    Dimension toolBarMin = new Dimension(150,500);
-	    toolBar.setMinimumSize(toolBarMin);
+	    toolBar.setMinimumSize(new Dimension(150,500));
 	    
 	    int width100 = toolBar.getWidth() - 4;
 	    int y = 5; 
 
 	    JPanel panel = new JPanel();
 	    panel.setLayout(new GridLayout(8, 1));
+	    panel.setMaximumSize(new Dimension(150,500));
+	    
 	    y = createJButton(panel, width100, y, "Novo [CTRL-N]", "/imgs/new_small.png");
 	    y = createJButton(panel, width100, y, "Abrir [CTRL-O]", "/imgs/open_small.png");
 	    y = createJButton(panel, width100, y, "Salvar [CTRL-S]", "/imgs/save_small.png");
@@ -93,7 +94,7 @@ public class Interface {
 	    toolBar.add(panel);
 	    
 	    lblArquivo = new JLabel(caminhoArquivoAberto);
-	    lblArquivo.setBounds(0, 547, 884, 14);
+	    lblArquivo.setBounds(0, 547, 900, 25);
 	    frame.getContentPane().add(lblArquivo, BorderLayout.SOUTH);
 	    Dimension labelMin = new Dimension(900,25);
 	    lblArquivo.setMinimumSize(labelMin);
