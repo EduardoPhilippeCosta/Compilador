@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import javax.swing.AbstractAction;
@@ -31,6 +33,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.text.BadLocationException;
 
 import controller.Lexico;
 import model.LexicalError;
@@ -198,15 +201,28 @@ public class Interface {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Lexico lexico = new Lexico();
-			lexico.setInput(textAreaCaixaDeTexto.getText());
+			ArrayList<Integer> lineAnalyzer = new ArrayList<Integer>(); 
+			
+			try {
+				int rows = textAreaCaixaDeTexto.getLineCount();
+				
+				for (int i = 0; i < rows; i++) {
+					int lastPosition = textAreaCaixaDeTexto.getLineEndOffset(i) - 1;
+					lineAnalyzer.add(lastPosition);
+				}
+			} catch (BadLocationException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			lexico.setInput(textAreaCaixaDeTexto.getText(), lineAnalyzer);
 			try {
 				Token t = null;
 				while ((t = lexico.nextToken()) != null) {
-					System.out.println(t.getLexeme());
 					textAreaMensagens.setText("Compilado com sucesso!");
 				}
 			} catch (LexicalError error) {
-				textAreaMensagens.setText(error.getMessage() + " em " + error.getPosition());
+				textAreaMensagens.setText(error.getMessage() + " na linha " + error.getLine());
 			}
 		}
 	}

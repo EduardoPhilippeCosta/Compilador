@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+
 import model.Constants;
 import model.LexicalError;
 import model.Token;
@@ -8,20 +10,22 @@ public class Lexico implements Constants
 {
     private int position;
     private String input;
+    private ArrayList<Integer> lineAnalyzer = new ArrayList<Integer>();
 
     public Lexico()
     {
-        this("");
+        this("", new ArrayList<Integer>());
     }
 
-    public Lexico(String input)
+    public Lexico(String input, ArrayList<Integer> lineAnalyzer)
     {
-        setInput(input);
+        setInput(input, lineAnalyzer);
     }
 
-    public void setInput(String input)
+    public void setInput(String input, ArrayList<Integer> lineAnalyzer)
     {
         this.input = input;
+        this.lineAnalyzer = lineAnalyzer;
         setPosition(0);
     }
 
@@ -59,8 +63,11 @@ public class Lexico implements Constants
                 }
             }
         }
-        if (endState < 0 || (endState != state && tokenForState(lastState) == -2))
-            throw new LexicalError(SCANNER_ERROR[lastState], start);
+        if (endState < 0 || (endState != state && tokenForState(lastState) == -2)) {
+        	int line = this.getErrorLine(start, lineAnalyzer);
+        	
+        	throw new LexicalError(SCANNER_ERROR[lastState], start, line);
+        }
 
         position = end;
 
@@ -76,6 +83,25 @@ public class Lexico implements Constants
         }
     }
 
+    private int getErrorLine(int position, ArrayList<Integer> lineAnalyzer) {
+    	int linhaErro = 0;
+		
+		for (int i = 0; i < lineAnalyzer.size(); i++) {
+			if (position <= lineAnalyzer.get(i)) {
+				linhaErro = i + 1;
+				break;
+			} else if (position == lineAnalyzer.get(i)) {
+				linhaErro = i + 1;
+				break;
+			} else if (lineAnalyzer.size() - 1 == i) {
+				linhaErro = lineAnalyzer.size();
+				break;
+			}
+		}
+		
+		return linhaErro;
+    }
+    
     private int nextState(char c, int state)
     {
         int start = SCANNER_TABLE_INDEXES[state];
