@@ -36,6 +36,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.text.BadLocationException;
 
 import controller.Lexico;
+import model.ConstantsEnum;
 import model.LexicalError;
 import model.Token;
 
@@ -216,13 +217,16 @@ public class Interface {
 			}
 			
 			lexico.setInput(textAreaCaixaDeTexto.getText(), lineAnalyzer);
+			
 			try {
 				Token t = null;
+				textAreaMensagens.setText("linha	classe	lexema\r\n");
 				while ((t = lexico.nextToken()) != null) {
-					textAreaMensagens.setText("Compilado com sucesso!");
+					textAreaMensagens.setText(textAreaMensagens.getText() + lexico.getLine(t.getPosition()) + "	" + ConstantsEnum.GetValue(t.getId()) + "	" + t.getLexeme() + "\r\n");
 				}
+				textAreaMensagens.setText(textAreaMensagens.getText() + "	programa compilado com sucesso");
 			} catch (LexicalError error) {
-				textAreaMensagens.setText(error.getMessage() + " na linha " + error.getLine());
+				textAreaMensagens.setText("Erro na linha " + error.getLine() + " - " + error.getMessage());
 			}
 		}
 	}

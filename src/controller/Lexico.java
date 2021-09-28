@@ -64,9 +64,9 @@ public class Lexico implements Constants
             }
         }
         if (endState < 0 || (endState != state && tokenForState(lastState) == -2)) {
-        	int line = this.getErrorLine(start, lineAnalyzer);
+        	int line = this.getLine(start);
         	
-        	throw new LexicalError(SCANNER_ERROR[lastState], start, line);
+        	throw new LexicalError(input.substring(start, start+1) + " " + SCANNER_ERROR[lastState], start, line);
         }
 
         position = end;
@@ -83,18 +83,18 @@ public class Lexico implements Constants
         }
     }
 
-    private int getErrorLine(int position, ArrayList<Integer> lineAnalyzer) {
+    public int getLine(int position) {
     	int linhaErro = 0;
 		
-		for (int i = 0; i < lineAnalyzer.size(); i++) {
-			if (position <= lineAnalyzer.get(i)) {
+		for (int i = 0; i < this.lineAnalyzer.size(); i++) {
+			if (position <= this.lineAnalyzer.get(i)) {
 				linhaErro = i + 1;
 				break;
-			} else if (position == lineAnalyzer.get(i)) {
+			} else if (position == this.lineAnalyzer.get(i)) {
 				linhaErro = i + 1;
 				break;
-			} else if (lineAnalyzer.size() - 1 == i) {
-				linhaErro = lineAnalyzer.size();
+			} else if (this.lineAnalyzer.size() - 1 == i) {
+				linhaErro = this.lineAnalyzer.size();
 				break;
 			}
 		}
