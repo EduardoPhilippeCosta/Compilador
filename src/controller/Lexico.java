@@ -79,6 +79,13 @@ public class Lexico implements Constants
         {
             String lexeme = input.substring(start, end);
             token = lookupToken(token, lexeme);
+            
+            if(token == 2) {
+            	int line = this.getLine(start);
+            	
+            	throw new LexicalError(input.substring(start, end) + " palavra reservada inválida", start, line);
+            }
+            
             return new Token(token, lexeme, start);
         }
     }

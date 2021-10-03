@@ -4,7 +4,7 @@ public enum ConstantsEnum implements Constants {
 
 	enum_EPSILON(EPSILON, "epsilon"),
 	enum_DOLLAR(DOLLAR,"dólar"),
-	enum_palavra_reservada(t_palavra_reservada,"palavra reservada"),
+	enum_palavra_reservada(t_palavra_reservada,"palavra reservada inválida"),
 	enum_identificador_int(t_identificador_int,"identificador"),
 	enum_identificador_float(t_identificador_float,"identificador"),
 	enum_identificador_string(t_identificador_string,"identificador"),
