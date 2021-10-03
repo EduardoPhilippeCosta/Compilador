@@ -1,0 +1,83 @@
+#Options
+GenerateScanner = true
+GenerateParser = false
+Language = Java
+ScannerName = Lexico
+ScannerCaseSensitive = true
+ScannerTable = Compact
+Input = String
+#RegularDefinitions
+// definições regulares auxiliares
+
+min: [a-z] 
+mai: [A-Z]
+barra: "/"
+letra: {mai} | {min}
+num: [0-9]
+comentario_linha: ![^\n]*
+comentario_bloco: \{([^\{\}])*\}
+#Tokens
+//EQUIPE: Eduardo Philippe Costa, Lucas Reichert  e Vitor Gabriel Eduardo
+
+palavra_reservada: {min} ({mai} {min} | {min})*
+
+identificador_int: I_{letra} ({letra} | {num} | _{letra} | _{num})*
+
+identificador_float: F_{letra} ({letra} | {num} | _{letra} | _{num})*
+
+identificador_string: S_{letra} ({letra} | {num} | _{letra} | _{num})*
+
+identificador_bool: B_{letra} ({letra} | {num} | _{letra} | _{num})* 
+
+constante_int:({num})+
+
+constante_float:({num})+\.({num})+
+
+constante_string: \"([^\"\n\\])*\"
+
+
+// plavras reservadas
+and 		= palavra_reservada: "and"
+endIf 		= palavra_reservada: "endIf" 
+endWhile 	= palavra_reservada: "endWhile" 
+false 		= palavra_reservada: "false" 
+finish 		= palavra_reservada: "finish" 
+if 		= palavra_reservada: "if" 
+in 		= palavra_reservada: "in" 
+isFalseDo 	= palavra_reservada: "isFalseDo"
+isTrueDo 	= palavra_reservada: "isTrueDo" 
+newLine 		= palavra_reservada: "newLine" 
+not  		= palavra_reservada: "not"
+or  		= palavra_reservada: "or"
+out  		= palavra_reservada: "out"
+space  		= palavra_reservada: "space"
+start  		= palavra_reservada: "start"
+tab  		= palavra_reservada: "tab"
+true  		= palavra_reservada: "true"
+while 		= palavra_reservada: "while"
+
+// símbolos especiais
+se_ac: "["
+se_fc: "]" 
+se_ap: "(" 
+se_fp: ")" 
+se_ig: "==" 
+se_dif: "<>" 
+se_men: "<" 
+se_mai: ">" 
+se_mais: "+" 
+se_menos: "-" 
+se_mult: "*" 
+se_divis: "/" 
+se_virg: "," 
+se_pv: ";" 
+se_dp: ":" 
+se_atr: "="
+
+// reconhecer e ignorar os caracteres de formatação
+:[\s\t\n]
+
+// reconhecer e ignorar comentários
+:! {comentario_linha}
+:! {comentario_bloco}
+
