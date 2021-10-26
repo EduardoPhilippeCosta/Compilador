@@ -231,12 +231,8 @@ public class Interface {
 			catch ( LexicalError lexicalError ) {
 				textAreaMensagens.setText("Erro na linha " + lexicalError.getLine() + " - " + lexicalError.getMessage());
 			} 
-			catch ( SyntaticError SyntaticError ) {
-			     System.out.println(SyntaticError.getPosition() + " símbolo encontrado: na entrada " + SyntaticError.getMessage());   
-				//Trata erros sintáticos
-				//linha 
-				//símbolo encontrado
-				//mensagem - símbolos esperados,   alterar ParserConstants.java, String[] PARSER_ERROR		
+			catch ( SyntaticError syntaticError ) {
+				textAreaMensagens.setText("Erro na linha " + syntaticError.getLine() + " - " + "encontrado: "+ syntaticError.getToken() +" "+ syntaticError.getMessage());		
 			}
 			catch ( SemanticError semanticError ) {
 				//Trata erros semânticos
