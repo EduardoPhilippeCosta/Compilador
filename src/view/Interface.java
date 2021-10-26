@@ -35,9 +35,11 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.text.BadLocationException;
 
 import controller.Lexico;
-import model.ConstantsEnum;
+import controller.Semantico;
+import controller.Sintatico;
 import model.LexicalError;
-import model.Token;
+import model.SemanticError;
+import model.SyntaticError;
 
 public class Interface {
 
@@ -200,7 +202,6 @@ public class Interface {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Lexico lexico = new Lexico();
 			ArrayList<Integer> lineAnalyzer = new ArrayList<Integer>(); 
 			
 			try {
@@ -215,18 +216,32 @@ public class Interface {
 				e1.printStackTrace();
 			}
 			
+			
+			
+			Lexico lexico = new Lexico();
+			Sintatico sintatico = new Sintatico();
+			Semantico semantico = new Semantico();
+			
 			lexico.setInput(textAreaCaixaDeTexto.getText(), lineAnalyzer);
 			
 			try {
-				Token t = null;
-				textAreaMensagens.setText("linha	classe	lexema\r\n");
-				while ((t = lexico.nextToken()) != null) {
-					textAreaMensagens.setText(textAreaMensagens.getText() + lexico.getLine(t.getPosition()) + "	" + ConstantsEnum.GetValue(t.getId()) + "	" + t.getLexeme() + "\r\n");
-				}
-				textAreaMensagens.setText(textAreaMensagens.getText() + "	programa compilado com sucesso");
-			} catch (LexicalError error) {
-				textAreaMensagens.setText("Erro na linha " + error.getLine() + " - " + error.getMessage());
+				sintatico.parse(lexico, semantico);
+				textAreaMensagens.setText("Programa compilado com sucesso!");
 			}
+			catch ( LexicalError lexicalError ) {
+				textAreaMensagens.setText("Erro na linha " + lexicalError.getLine() + " - " + lexicalError.getMessage());
+			} 
+			catch ( SyntaticError SyntaticError ) {
+			     System.out.println(SyntaticError.getPosition() + " símbolo encontrado: na entrada " + SyntaticError.getMessage());   
+				//Trata erros sintáticos
+				//linha 
+				//símbolo encontrado
+				//mensagem - símbolos esperados,   alterar ParserConstants.java, String[] PARSER_ERROR		
+			}
+			catch ( SemanticError semanticError ) {
+				//Trata erros semânticos
+			}
+			
 		}
 	}
 
