@@ -136,86 +136,86 @@ public interface ParserConstants
     String[] PARSER_ERROR =
     {
         "",
-        "Era esperado fim de programa",
-        "Era esperado palavra_reservada",
-        "Era esperado identificador_int",
-        "Era esperado identificador_float",
-        "Era esperado identificador_string",
-        "Era esperado identificador_bool",
-        "Era esperado constante_int",
-        "Era esperado constante_float",
-        "Era esperado constante_string",
-        "Era esperado and",
-        "Era esperado endIf",
-        "Era esperado endWhile",
-        "Era esperado false",
-        "Era esperado finish",
-        "Era esperado if",
-        "Era esperado in",
-        "Era esperado isFalseDo",
-        "Era esperado isTrueDo",
-        "Era esperado newLine",
-        "Era esperado not",
-        "Era esperado or",
-        "Era esperado out",
-        "Era esperado space",
-        "Era esperado start",
-        "Era esperado tab",
-        "Era esperado true",
-        "Era esperado while",
-        "Era esperado se_ac",
-        "Era esperado se_fc",
-        "Era esperado se_ap",
-        "Era esperado se_fp",
-        "Era esperado se_ig",
-        "Era esperado se_dif",
-        "Era esperado se_men",
-        "Era esperado se_mai",
-        "Era esperado se_mais",
-        "Era esperado se_menos",
-        "Era esperado se_mult",
-        "Era esperado se_divis",
-        "Era esperado se_virg",
-        "Era esperado se_pv",
-        "Era esperado se_dp",
-        "Era esperado se_atr",
-        "<programa> inválido",
-        "<declaracao_variaveis> inválido",
-        "<lista_identificadores> inválido",
-        "<lista_identificadores1> inválido",
-        "<identificador> inválido",
-        "<outro_identificador> inválido",
-        "<colchetes_array> inválido",
-        "<lista_comandos> inválido",
-        "<lista_comandos1> inválido",
-        "<comando> inválido",
-        "<comando_atribuicao> inválido",
-        "<expressao_opcional> inválido",
-        "<sufixo> inválido",
-        "<comando_entrada_dados> inválido",
-        "<constante_string_opcional> inválido",
-        "<lista_variaveis> inválido",
-        "<lista_variaveis1> inválido",
-        "<comando_saida_dados> inválido",
-        "<lista_expressoes> inválido",
-        "<lista_expressoes1> inválido",
-        "<comando_selecao> inválido",
-        "<comando_IsFalseDo_opcional> inválido",
-        "<comando_repeticao> inválido",
-        "<comando_repeticao1> inválido",
-        "<expressao> inválido",
-        "<expressao_> inválido",
-        "<elemento> inválido",
-        "<relacional> inválido",
-        "<relacional_> inválido",
-        "<operador_relacional> inválido",
-        "<aritmetica> inválido",
-        "<aritmetica_> inválido",
-        "<termo> inválido",
-        "<termo_> inválido",
-        "<fator> inválido",
-        "<fator_> inválido",
-        "<identificador_fator> inválido"
+        "esperado EOF",// Era esperado fim de programa
+        "esperado palavra_reservada",//Era esperado palavra_reservada
+        "esperado identificador",//Era esperado identificador_int
+        "esperado identificador",//Era esperado identificador_float
+        "esperado identificador",//Era esperado identificador_string
+        "esperado identificador",//Era esperado identificador_bool
+        "esperado constante",//esperado constante_int
+        "esperado constante",//esperado constante_float
+        "esperado constante",//esperado constante_string
+        "esperado and",//Era esperado and
+        "esperado endIf",//Era esperado endIf
+        "esperado endWhile",//Era esperado endWhile
+        "esperado false",//Era esperado false
+        "esperado finish",//Era esperado finish
+        "esperado if",//Era esperado if
+        "esperado in",//Era esperado in
+        "esperado isFalseDo",//Era esperado isFalseDo
+        "esperado isTrueDo",//Era esperado isTrueDo
+        "esperado newLine",//Era esperado newLine
+        "esperado not",//Era esperado not
+        "esperado or",//Era esperado or
+        "esperado out",//Era esperado out
+        "esperado space",//Era esperado space
+        "esperado start",//Era esperado start
+        "esperado tab",//Era esperado tab
+        "esperado true",//Era esperado true
+        "esperado while",//Era esperado while
+        "esperado '['",//Era esperado se_ac
+        "esperado ']'",//Era esperado se_fc
+        "esperado '('",//Era esperado se_ap
+        "esperado ')'",//Era esperado se_fp
+        "esperado '=='",//Era esperado se_ig
+        "esperado '<>'",//Era esperado se_dif
+        "esperado '<'",//Era esperado se_men
+        "esperado '>'",//Era esperado se_mai
+        "esperado '+'",//Era esperado se_mais
+        "esperado '-'",//Era esperado se_menos
+        "esperado '*'",//Era esperado se_mult
+        "esperado '/'",//Era esperado se_divis
+        "esperado ','",//Era esperado se_virg
+        "esperado ';'",//Era esperado se_pv
+        "esperado ':'",//Era esperado se_dp
+        "esperado '='",//Era esperado se_atr
+        "esperado start",//<programa> inválido
+        "esperado identificador if in out while :",//<declaracao_variaveis> inválido
+        "esperado , ;",//<lista_identificadores> inválido
+        "esperado , ;",//<lista_identificadores1> inválido
+        "<identificador> inválido",//
+        "<outro_identificador> inválido",//
+        "esperado [ , ;",//<colchetes_array> inválido
+        "esperado identificador if in out while",//<lista_comandos> inválido
+        "esperado identificador if in out while",//<lista_comandos1> inválido
+/**/	"",//<comando> inválido
+/**/    "",//<comando_atribuicao> inválido
+/**/    "",//<expressao_opcional> inválido
+/**/    "",//<sufixo> inválido
+/**/    "",//<comando_entrada_dados> inválido
+/**/    "",//<constante_string_opcional> inválido
+        "esperado expressão",//<lista_variaveis> inválido
+        "esperado expressão",//<lista_variaveis1> inválido
+/**/    "",//<comando_saida_dados> inválido
+        "esperado expressão",//<lista_expressoes> inválido
+        "esperado expressão",//<lista_expressoes1> inválido
+        "esperado ",//<comando_selecao> inválido
+        "esperado isFalseDo",//<comando_IsFalseDo_opcional> inválido
+/**/    "esperado while",//<comando_repeticao> inválido
+        "esperado isTrueDo ou isFalseDo",//<comando_repeticao1> inválido
+        "esperado expressão",//<expressao> inválido
+        "esperado expressão",//<expressao_> inválido
+        "esperado expressão",//<elemento> inválido
+        "esperado expressão",//<relacional> inválido
+        "esperado expressão",//<relacional_> inválido
+        "esperado '==', '<>', '>' ou '>' ",//<operador_relacional> inválido
+        "esperado expressão",//<aritmetica> inválido
+        "esperado expressão",//<aritmetica_> inválido
+        "esperado expressão",//<termo> inválido
+        "esperado expressão",//<termo_> inválido
+        "esperado expressão",//<fator> inválido
+        "esperado expressão",//<fator_> inválido
+        "esperado identificador_int ou indentificador_float"//<identificador_fator> inválido
     };
 }
 
