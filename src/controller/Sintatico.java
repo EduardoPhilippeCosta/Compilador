@@ -64,17 +64,18 @@ public class Sintatico implements Constants
             }
             else
             {
-            	// TODO: mandar a linha
-                throw new SyntaticError(PARSER_ERROR[x], currentToken.getPosition(), 0);
+            	int line = this.scanner.getLine(currentToken.getPosition());
+                throw new SyntaticError(PARSER_ERROR[x], currentToken.getPosition(), line, currentToken.getLexeme());
             }
         }
         else if (isNonTerminal(x))
         {
             if (pushProduction(x, a))
                 return false;
-            else
-            	// TODO: mandar a linha
-                throw new SyntaticError(PARSER_ERROR[x], currentToken.getPosition(), 0);
+            else {
+            	int line = this.scanner.getLine(currentToken.getPosition());
+                throw new SyntaticError(PARSER_ERROR[x], currentToken.getPosition(), line, currentToken.getLexeme());
+            }
         }
         else // isSemanticAction(x)
         {
