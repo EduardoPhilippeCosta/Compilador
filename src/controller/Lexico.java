@@ -70,7 +70,7 @@ public class Lexico implements Constants
         		throw new LexicalError(SCANNER_ERROR[lastState], start, line);
         	} else {
         		
-        		end = getIndexOfFirstLetter(input.substring(start, input.length()));
+        		end = getIndexOfFirstOccurrence(input.substring(start, input.length()));
         		end = end == -1 ? input.length() - start : end + start;
         		throw new LexicalError(input.substring(start, end) + " " + SCANNER_ERROR[lastState], start, line);
         	}
@@ -178,7 +178,7 @@ public class Lexico implements Constants
             return (char) -1;
     }
     
-    int getIndexOfFirstLetter(String input) {
+    int getIndexOfFirstOccurrence(String input) {
         var index = 0;
         for (char c : input.toCharArray())	{
             if (Character.isDigit(c) || Character.isLetter(c) || c == '_') {
