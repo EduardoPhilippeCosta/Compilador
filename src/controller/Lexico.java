@@ -55,7 +55,7 @@ public class Lexico implements Constants
                 break;
 
             else
-            {
+            {    	
                 if (tokenForState(state) >= 0)
                 {
                     endState = state;
@@ -66,7 +66,14 @@ public class Lexico implements Constants
         if (endState < 0 || (endState != state && tokenForState(lastState) == -2)) {
         	int line = this.getLine(start);
         	
-        	throw new LexicalError(input.substring(start, start+1) + " " + SCANNER_ERROR[lastState], start, line);
+        	if(lastState == 3 || lastState == 24) {
+        		throw new LexicalError(SCANNER_ERROR[lastState], start, line);
+        	} else {
+        		
+        		end = getIndexOfFirstLetter(input.substring(start, input.length()));
+        		end = end == -1 ? input.length() - start : end + start;
+        		throw new LexicalError(input.substring(start, end) + " " + SCANNER_ERROR[lastState], start, line);
+        	}
         }
 
         position = end;
@@ -169,5 +176,18 @@ public class Lexico implements Constants
             return input.charAt(position++);
         else
             return (char) -1;
+    }
+    
+    int getIndexOfFirstLetter(String input) {
+        var index = 0;
+        for (char c : input.toCharArray())	{
+            if (Character.isDigit(c) || Character.isLetter(c) || c == '_') {
+            	index++;
+            }	else {
+            	return index;
+            }    
+        }
+
+        return -1;
     }
 }

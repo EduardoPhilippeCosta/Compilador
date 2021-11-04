@@ -226,7 +226,7 @@ public class Interface {
 			
 			try {
 				sintatico.parse(lexico, semantico);
-				textAreaMensagens.setText("Programa compilado com sucesso!");
+				textAreaMensagens.setText("programa compilado com sucesso ");
 			}
 			catch ( LexicalError lexicalError ) {
 				textAreaMensagens.setText("Erro na linha " + lexicalError.getLine() + " - " + lexicalError.getMessage());

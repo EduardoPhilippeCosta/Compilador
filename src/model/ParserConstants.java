@@ -163,22 +163,22 @@ public interface ParserConstants
         "esperado tab",//Era esperado tab
         "esperado true",//Era esperado true
         "esperado while",//Era esperado while
-        "esperado '['",//Era esperado se_ac
-        "esperado ']'",//Era esperado se_fc
-        "esperado '('",//Era esperado se_ap
-        "esperado ')'",//Era esperado se_fp
-        "esperado '=='",//Era esperado se_ig
-        "esperado '<>'",//Era esperado se_dif
-        "esperado '<'",//Era esperado se_men
-        "esperado '>'",//Era esperado se_mai
-        "esperado '+'",//Era esperado se_mais
-        "esperado '-'",//Era esperado se_menos
-        "esperado '*'",//Era esperado se_mult
-        "esperado '/'",//Era esperado se_divis
-        "esperado ','",//Era esperado se_virg
-        "esperado ';'",//Era esperado se_pv
-        "esperado ':'",//Era esperado se_dp
-        "esperado '='",//Era esperado se_atr
+        "esperado [",//Era esperado se_ac
+        "esperado ]",//Era esperado se_fc
+        "esperado (",//Era esperado se_ap
+        "esperado )",//Era esperado se_fp
+        "esperado ==",//Era esperado se_ig
+        "esperado <>",//Era esperado se_dif
+        "esperado <",//Era esperado se_men
+        "esperado >",//Era esperado se_mai
+        "esperado +",//Era esperado se_mais
+        "esperado -",//Era esperado se_menos
+        "esperado *",//Era esperado se_mult
+        "esperado /",//Era esperado se_divis
+        "esperado ,",//Era esperado se_virg
+        "esperado ;",//Era esperado se_pv
+        "esperado :",//Era esperado se_dp
+        "esperado =",//Era esperado se_atr
         "esperado start",//<programa> inválido
         "esperado identificador if in out while :",//<declaracao_variaveis> inválido
         "esperado , ;",//<lista_identificadores> inválido
@@ -208,7 +208,7 @@ public interface ParserConstants
         "esperado expressão",//<elemento> inválido
         "esperado expressão",//<relacional> inválido
         "esperado expressão",//<relacional_> inválido
-        "esperado '==', '<>', '>' ou '>' ",//<operador_relacional> inválido
+        "esperado ==, <>, > ou > ",//<operador_relacional> inválido
         "esperado expressão",//<aritmetica> inválido
         "esperado expressão",//<aritmetica_> inválido
         "esperado expressão",//<termo> inválido
