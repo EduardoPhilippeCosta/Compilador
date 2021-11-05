@@ -1,0 +1,193 @@
+#Options
+GenerateScanner = true
+GenerateParser = true
+Language = Java
+ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
+ScannerCaseSensitive = true
+ScannerTable = Compact
+Input = Stream
+Parser = LL
+#RegularDefinitions
+// definições regulares auxiliares
+
+min: [a-z] 
+mai: [A-Z]
+barra: "/"
+letra: {mai} | {min}
+num: [0-9]
+comentario_linha: ![^\n]*
+comentario_bloco: \{([^\{\}])*\}
+#Tokens
+//NOTA trabalho no.3: 10,0
+
+
+//EQUIPE: Eduardo Philippe Costa, Lucas Reichert  e Vitor Gabriel Eduardo
+
+palavra_reservada: {min} ({mai} {min} | {min})*
+
+identificador_int: I_{letra} ({letra} | {num} | _{letra} | _{num})*
+
+identificador_float: F_{letra} ({letra} | {num} | _{letra} | _{num})*
+
+identificador_string: S_{letra} ({letra} | {num} | _{letra} | _{num})*
+
+identificador_bool: B_{letra} ({letra} | {num} | _{letra} | _{num})* 
+
+constante_int:({num})+
+
+constante_float:({num})+\.({num})+
+
+constante_string: \"([^\"\n\\])*\"
+
+
+// plavras reservadas
+and 		= palavra_reservada: "and"
+endIf 		= palavra_reservada: "endIf" 
+endWhile 	= palavra_reservada: "endWhile" 
+false 		= palavra_reservada: "false" 
+finish 		= palavra_reservada: "finish" 
+if 		= palavra_reservada: "if" 
+in 		= palavra_reservada: "in" 
+isFalseDo 	= palavra_reservada: "isFalseDo"
+isTrueDo 	= palavra_reservada: "isTrueDo" 
+newLine 		= palavra_reservada: "newLine" 
+not  		= palavra_reservada: "not"
+or  		= palavra_reservada: "or"
+out  		= palavra_reservada: "out"
+space  		= palavra_reservada: "space"
+start  		= palavra_reservada: "start"
+tab  		= palavra_reservada: "tab"
+true  		= palavra_reservada: "true"
+while 		= palavra_reservada: "while"
+
+// símbolos especiais
+se_ac: "["
+se_fc: "]" 
+se_ap: "(" 
+se_fp: ")" 
+se_ig: "==" 
+se_dif: "<>" 
+se_men: "<" 
+se_mai: ">" 
+se_mais: "+" 
+se_menos: "-" 
+se_mult: "*" 
+se_divis: "/" 
+se_virg: "," 
+se_pv: ";" 
+se_dp: ":" 
+se_atr: "="
+
+// reconhecer e ignorar os caracteres de formatação
+:[\s\t\n]
+
+// reconhecer e ignorar comentários
+:! {comentario_linha}
+:! {comentario_bloco}
+
+#NonTerminals
+<programa>
+
+<declaracao_variaveis>
+<lista_identificadores>
+<lista_identificadores1>
+<identificador>
+<outro_identificador>
+<colchetes_array>
+<lista_comandos>
+<lista_comandos1>
+<comando>
+<comando_atribuicao>
+<expressao_opcional>
+<sufixo>
+<comando_entrada_dados>
+<constante_string_opcional>
+<lista_variaveis>
+<lista_variaveis1>
+<comando_saida_dados>
+<lista_expressoes>
+<lista_expressoes1>
+<comando_selecao>
+<comando_IsFalseDo_opcional>
+<comando_repeticao>
+<comando_repeticao1>
+<expressao>
+<expressao_>
+<elemento>
+<relacional>
+<relacional_>
+<operador_relacional>
+<aritmetica>
+<aritmetica_>
+<termo>
+<termo_>
+<fator>
+<fator_>
+<identificador_fator>
+
+
+
+
+
+#Grammar
+<programa>::= start <declaracao_variaveis> <lista_comandos> finish ;
+ 
+<declaracao_variaveis>::= se_dp <lista_identificadores> se_pv | î ;
+<lista_identificadores>::= <identificador> <lista_identificadores1> ;
+<lista_identificadores1>::= î | se_virg <lista_identificadores> ;
+
+<identificador>::= <outro_identificador> <colchetes_array> ;
+<outro_identificador>::= identificador_int | identificador_float | identificador_string | identificador_bool ;
+<colchetes_array>::= se_ac constante_int se_fc | î ;
+ 
+<lista_comandos>::= <comando> <lista_comandos1> ;
+<lista_comandos1>::= î | <lista_comandos> ;
+<comando>::= <comando_atribuicao> | <comando_entrada_dados> | <comando_saida_dados> | <comando_selecao> | <comando_repeticao> ;
+
+<comando_atribuicao>::= <outro_identificador> <expressao_opcional> se_atr <expressao> <sufixo> ;
+<expressao_opcional>::= se_ac <expressao> se_fc | î ;
+<sufixo>::= se_dp if <expressao> | î ;
+
+<comando_entrada_dados>::= in se_ap<constante_string_opcional> <lista_variaveis>se_fp ;
+<constante_string_opcional>::= constante_string se_virg | î ;
+<lista_variaveis>::= <outro_identificador> <expressao_opcional> <lista_variaveis1> ;
+<lista_variaveis1>::= î | se_virg <lista_variaveis> ;
+
+<comando_saida_dados>::= out se_ap <lista_expressoes> se_fp ;
+<lista_expressoes>::= <expressao> <lista_expressoes1> ;
+<lista_expressoes1>::= î | se_virg <lista_expressoes> ;
+
+<comando_selecao>::= if <expressao> isTrueDo <lista_comandos> <comando_IsFalseDo_opcional> endIf ;
+<comando_IsFalseDo_opcional>::= isFalseDo <lista_comandos> | î ;
+
+<comando_repeticao>::= while <expressao> <comando_repeticao1> <lista_comandos> endWhile ;
+<comando_repeticao1>::= isTrueDo | isFalseDo ;
+
+<expressao> ::= <elemento> <expressao_> ; 
+<expressao_> ::= î | and <elemento> <expressao_> | or <elemento> <expressao_> ; 
+<elemento> ::= <relacional> | true | false | not <elemento> ; 
+
+<relacional> ::= <aritmetica> <relacional_> ; 
+<relacional_> ::= î | <operador_relacional> <aritmetica> ; 
+
+<operador_relacional> ::= se_ig | se_dif | se_men | se_mai ; 
+
+<aritmetica> ::= <termo> <aritmetica_> ; 
+<aritmetica_> ::= î | se_mais <termo> <aritmetica_> | se_menos <termo> <aritmetica_> ; 
+
+<termo> ::= <fator> <termo_> ; 
+<termo_> ::= î | se_mult <fator> <termo_> | se_divis <fator> <termo_> ; 
+
+<fator> ::= <identificador_fator> <fator_> | 
+ constante_int | 
+ constante_float | 
+ constante_string | newLine | space | tab | 
+ se_ap <expressao> se_fp | 
+ se_mais <fator> | 
+ se_menos <fator> ; 
+<fator_> ::= î | se_ac <expressao> se_fc ; 
+<identificador_fator> ::= identificador_int | identificador_float | identificador_string | identificador_bool ; 
+
+
