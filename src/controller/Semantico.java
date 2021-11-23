@@ -17,7 +17,29 @@ public class Semantico implements Constants
 	
     public void executeAction(int action, Token token)	throws SemanticError
     {
-        System.out.println("Ação #"+action+", Token: "+token);
+        try {
+			switch (action) {
+			case 5:
+				acao5(token);
+				break;
+			case 6:
+				acao6(token);
+				break;
+			case 14:
+				acao14();
+				break;
+			case 15:
+				acao15();
+				break;
+			case 16:
+				acao16();
+				break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + action);
+			}
+		} catch (Exception e) {
+			throw new SemanticError(e.getMessage(), token.getPosition(), 0);
+		}
     }	
     
     public void acao5(Token token) {
