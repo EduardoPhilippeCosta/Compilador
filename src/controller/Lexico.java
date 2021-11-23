@@ -92,8 +92,9 @@ public class Lexico implements Constants
             	
             	throw new LexicalError(input.substring(start, end) + " palavra reservada inválida", start, line);
             }
+            int line = this.getLine(start);
             
-            return new Token(token, lexeme, start);
+            return new Token(token, lexeme, start, line);
         }
     }
 

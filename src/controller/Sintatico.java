@@ -39,7 +39,8 @@ public class Sintatico implements Constants
             if (previousToken != null)
                 pos = previousToken.getPosition()+previousToken.getLexeme().length();
 
-            currentToken = new Token(DOLLAR, "$", pos);
+            int line = this.scanner.getLine(currentToken.getPosition());
+            currentToken = new Token(DOLLAR, "$", pos, line);
         }
 
         int x = ((Integer)stack.pop()).intValue();

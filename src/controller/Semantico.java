@@ -20,37 +20,37 @@ public class Semantico implements Constants
     	codigo.append("\n");
         try {
 			switch (action) {
-				case 5:
-					acao5(token);
-					break;
-				case 6:
-					acao6(token);
-					break;
-				case 14:
-					acao14();
-					break;
-				case 15:
-					acao15();
-					break;
-				case 16:
-					acao16();
-					break;
-				default:
-					throw new IllegalArgumentException("Unexpected value: " + action);
+			case 5:
+				acao5(token);
+				break;
+			case 6:
+				acao6(token);
+				break;
+			case 14:
+				acao14();
+				break;
+			case 15:
+				acao15();
+				break;
+			case 16:
+				acao16();
+				break;
+			default:
+				throw new SemanticError("Ação semântica não implementada: " + action);
 			}
 		} catch (Exception e) {
-			throw new SemanticError(e.getMessage(), token.getPosition(), 0);
+			throw new SemanticError(e.getMessage(), token.getPosition(), token.getLine());
 		}
     }	
     
     public void acao5(Token token) {
-    	pilha_tipos.add(Tipo.INT);
+    	pilha_tipos.push(Tipo.INT);
     	codigo.append("ldc.i8 ").append(token.getLexeme());
     	codigo.append("\n").append("conv.r8");
     }
     
     public void acao6(Token token) {
-    	pilha_tipos.add(Tipo.FLOAT);
+    	pilha_tipos.push(Tipo.FLOAT);
     	codigo.append("ldc.r8 ").append(token.getLexeme());
     }
     
@@ -64,7 +64,6 @@ public class Semantico implements Constants
     }
     
     public void acao15() {
-    	codigo.append("c�digo.adiciona(");
     	codigo.append("\n.assembly extern mscorlib {}");
     	codigo.append("\n.assembly _codigo_objeto {} ");
     	codigo.append("\n.module   _codigo_objeto.exe");
@@ -72,14 +71,11 @@ public class Semantico implements Constants
     	codigo.append("\n.class public _UNICA{ ");
     	codigo.append("\n.method static public void _principal() { ");
     	codigo.append("\n.entrypoint ");
-    	codigo.append("\n)");
     }
     
     public void acao16() {
-    	codigo.append("c�digo.adiciona(");
     	codigo.append("\n\t\tret");
     	codigo.append("\n}");
     	codigo.append("\n}");
-		codigo.append("\n)");
     }
 }
