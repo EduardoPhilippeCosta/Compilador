@@ -17,6 +17,7 @@ public class Semantico implements Constants
 	
     public void executeAction(int action, Token token) throws SemanticError
     {
+    	codigo.append("\n");
         try {
 			switch (action) {
 				case 5:
@@ -44,20 +45,17 @@ public class Semantico implements Constants
     
     public void acao5(Token token) {
     	pilha_tipos.add(Tipo.INT);
-    	codigo.append("\n");
     	codigo.append("ldc.i8 ").append(token.getLexeme());
     	codigo.append("\n").append("conv.r8");
     }
     
     public void acao6(Token token) {
     	pilha_tipos.add(Tipo.FLOAT);
-    	codigo.append("\n");
     	codigo.append("ldc.r8 ").append(token.getLexeme());
     }
     
     public void acao14() {
     	Tipo tipo = pilha_tipos.pop();
-    	codigo.append("\n");
     	if (tipo.equals(Tipo.INT)) {
     		codigo.append("conv.i8");
     	} else {
@@ -66,7 +64,7 @@ public class Semantico implements Constants
     }
     
     public void acao15() {
-    	codigo.append("\ncódigo.adiciona(");
+    	codigo.append("código.adiciona(");
     	codigo.append("\n.assembly extern mscorlib {}");
     	codigo.append("\n.assembly _codigo_objeto {} ");
     	codigo.append("\n.module   _codigo_objeto.exe");
@@ -78,7 +76,7 @@ public class Semantico implements Constants
     }
     
     public void acao16() {
-    	codigo.append("\ncódigo.adiciona(");
+    	codigo.append("código.adiciona(");
     	codigo.append("\n\t\tret");
     	codigo.append("\n}");
     	codigo.append("\n}");
