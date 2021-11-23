@@ -15,27 +15,27 @@ public class Semantico implements Constants
 	String operador = "";
 	
 	
-    public void executeAction(int action, Token token)	throws SemanticError
+    public void executeAction(int action, Token token) throws SemanticError
     {
         try {
 			switch (action) {
-			case 5:
-				acao5(token);
-				break;
-			case 6:
-				acao6(token);
-				break;
-			case 14:
-				acao14();
-				break;
-			case 15:
-				acao15();
-				break;
-			case 16:
-				acao16();
-				break;
-			default:
-				throw new IllegalArgumentException("Unexpected value: " + action);
+				case 5:
+					acao5(token);
+					break;
+				case 6:
+					acao6(token);
+					break;
+				case 14:
+					acao14();
+					break;
+				case 15:
+					acao15();
+					break;
+				case 16:
+					acao16();
+					break;
+				default:
+					throw new IllegalArgumentException("Unexpected value: " + action);
 			}
 		} catch (Exception e) {
 			throw new SemanticError(e.getMessage(), token.getPosition(), 0);
@@ -66,22 +66,22 @@ public class Semantico implements Constants
     }
     
     public void acao15() {
-    	codigo.append("código.adiciona(\r\n"
-    			+ "    .assembly extern mscorlib {}\r\n"
-    			+ "    .assembly _codigo_objeto{}\r\n"
-    			+ "    .module   _codigo_objeto.exe\r\n"
-    			+ "\r\n"
-    			+ "    .class public _UNICA{ \r\n"
-    			+ "    .method static public void _principal() {\r\n"
-    			+ "      .entrypoint \r\n"
-    			+ "  )");
+    	codigo.append("\ncódigo.adiciona(");
+    	codigo.append("\n.assembly extern mscorlib {}");
+    	codigo.append("\n.assembly _codigo_objeto {} ");
+    	codigo.append("\n.module   _codigo_objeto.exe");
+    	codigo.append("\n");
+    	codigo.append("\n.class public _UNICA{ ");
+    	codigo.append("\n.method static public void _principal() { ");
+    	codigo.append("\n.entrypoint ");
+    	codigo.append("\n)");
     }
     
     public void acao16() {
-    	codigo.append("código.adiciona(\r\n"
-    			+ "       ret\r\n"
-    			+ "       }\r\n"
-    			+ "    }\r\n"
-    			+ "  )");
+    	codigo.append("\ncódigo.adiciona(");
+    	codigo.append("\n\t\tret");
+    	codigo.append("\n}");
+    	codigo.append("\n}");
+		codigo.append("\n)");
     }
 }
