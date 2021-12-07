@@ -227,7 +227,7 @@ public class Interface {
 			try {
 				sintatico.parse(lexico, semantico);
 				System.out.println(semantico.getCodigo());
-				textAreaMensagens.setText("programa compilado com sucesso ");
+				textAreaMensagens.setText("programa compilado com sucesso");
 			}
 			catch ( LexicalError lexicalError ) {
 				textAreaMensagens.setText("Erro na linha " + lexicalError.getLine() + " - " + lexicalError.getMessage());
@@ -236,6 +236,7 @@ public class Interface {
 				textAreaMensagens.setText("Erro na linha " + syntaticError.getLine() + " - " + "encontrado: "+ syntaticError.getToken() +" "+ syntaticError.getMessage());		
 			}
 			catch ( SemanticError semanticError ) {
+				textAreaMensagens.setText("Erro na linha " + semanticError.getLine() + " - " + semanticError.getMessage());
 				//Trata erros semânticos
 			}
 			
@@ -251,6 +252,7 @@ public class Interface {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			textAreaMensagens.setText("");
 			if (validaManipulacaoArquivo(selecionador.showDialog(frame, "Abrir"))) {
 				StringBuilder textoCompleto = new StringBuilder();
 				try {
@@ -296,6 +298,7 @@ public class Interface {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			textAreaMensagens.setText("");
 			try {
 				if (caminhoArquivoAberto.equals("Arquivo não salvo")) {
 					if (validaManipulacaoArquivo(selecionador.showDialog(frame, "Salvar"))) {
