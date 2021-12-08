@@ -181,27 +181,27 @@ public interface ParserConstants
         "esperado =",//Era esperado se_atr
         "esperado start",//<programa> inválido
         "esperado identificador if in out while :",//<declaracao_variaveis> inválido
-        "esperado , ;",//<lista_identificadores> inválido
+        "esperado identificador",//<lista_identificadores> inválido
         "esperado , ;",//<lista_identificadores1> inválido
-        "<identificador> inválido",//
-        "<outro_identificador> inválido",//
+        "esperado identificador",//<identificador> inválido
+        "esperado identificador",//<outro_identificador> inválido
         "esperado [ , ;",//<colchetes_array> inválido
         "esperado identificador if in out while",//<lista_comandos> inválido
-        "esperado identificador if in out while",//<lista_comandos1> inválido
-/**/	"",//<comando> inválido
-/**/    "",//<comando_atribuicao> inválido
-/**/    "",//<expressao_opcional> inválido
-/**/    "",//<sufixo> inválido
-/**/    "",//<comando_entrada_dados> inválido
-/**/    "",//<constante_string_opcional> inválido
-        "esperado expressão",//<lista_variaveis> inválido
-        "esperado expressão",//<lista_variaveis1> inválido
-/**/    "",//<comando_saida_dados> inválido
+        "esperado identificador if endIf in out while endWhile finish",//<lista_comandos1> inválido
+        "esperado identificador if in out while",//<comando> inválido
+        "esperado identificador",//<comando_atribuicao> inválido
+	    "esperado [ ] , =",//<expressao_opcional> inválido
+	    "esperado : if",//<sufixo> inválido
+	    "esperado in ( )",//<comando_entrada_dados> inválido
+	    "esperado constante ,",//<constante_string_opcional> inválido
+        "esperado identificador ",//<lista_variaveis> inválido
+        "esperado vírgula",//<lista_variaveis1> inválido
+	    "esperado out",//<comando_saida_dados> inválido
         "esperado expressão",//<lista_expressoes> inválido
-        "esperado expressão",//<lista_expressoes1> inválido
-        "esperado ",//<comando_selecao> inválido
+        "esperado ,",//<lista_expressoes1> inválido
+        "esperado if",//<comando_selecao> inválido
         "esperado isFalseDo",//<comando_IsFalseDo_opcional> inválido
-/**/    "esperado while",//<comando_repeticao> inválido
+	    "esperado while",//<comando_repeticao> inválido
         "esperado isTrueDo ou isFalseDo",//<comando_repeticao1> inválido
         "esperado expressão",//<expressao> inválido
         "esperado expressão",//<expressao_> inválido
