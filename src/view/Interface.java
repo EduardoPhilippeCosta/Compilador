@@ -237,7 +237,6 @@ public class Interface {
 			}
 			catch ( SemanticError semanticError ) {
 				textAreaMensagens.setText("Erro na linha " + semanticError.getLine() + " - " + semanticError.getMessage());
-				//Trata erros semânticos
 			}
 			
 		}

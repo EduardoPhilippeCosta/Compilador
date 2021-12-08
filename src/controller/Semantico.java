@@ -14,7 +14,9 @@ public class Semantico implements Constants {
 	StringBuilder codigo = new StringBuilder();
 	private Stack<Tipo> pilha_tipos = new Stack<>();
 	private ArrayList<String> lista_id = new ArrayList<String>();
+	private Stack<Integer> pilha_rotulos = new Stack<>();
 	String operador = "";
+	int rotulo = 1;
 
 	public String getCodigo() {
 		return this.codigo.toString();
@@ -23,6 +25,7 @@ public class Semantico implements Constants {
 	public void executeAction(int action, Token token) throws SemanticError {
 		codigo.append("\n");
 		try {
+			System.out.println(action);
 			switch (action) {
 			case 1:
 				acao1();
@@ -96,6 +99,30 @@ public class Semantico implements Constants {
 			case 24:
 				acao24(token);
 				break;
+			case 25:
+				acao25(token);
+				break;
+			case 27:
+				acao27(token);
+				break;
+			case 28:
+				acao28();
+				break;
+			case 29:
+				acao29();
+				break;
+			case 30:
+				acao30();
+				break;
+			case 31:
+				acao31();
+				break;
+			case 32:
+				acao32();
+				break;
+			case 33:
+				acao33();
+				break;
 			case 34:
 				acao34(token);
 				break;
@@ -121,7 +148,7 @@ public class Semantico implements Constants {
 	public void acao14() {
 		Tipo tipo = pilha_tipos.pop();
 		if (tipo.equals(Tipo.INT)) {
-			codigo.append("conv.i8");
+			codigo.append("conv.i8\n");
 		}
 		codigo.append("call void [mscorlib]System.Console::Write(").append(tipo.getTipo()).append(")");
 	}
@@ -374,7 +401,7 @@ public class Semantico implements Constants {
 		pilha_tipos.push(tipo);
 
 		if (tipo.equals(Tipo.INT)) {
-			codigo.append("conv.r8");
+			codigo.append("\nconv.r8");
 		}
 	}
 
@@ -383,7 +410,7 @@ public class Semantico implements Constants {
 	}
 
 	public void acao23(Token token) {
-		for (int i = 0; i > lista_id.size(); i++) {
+		for (int i = 0; i < lista_id.size(); i++) {
 			String id = lista_id.get(i);
 			Tipo tipo = pegarTipo(token.getLexeme());
 
@@ -400,16 +427,85 @@ public class Semantico implements Constants {
 				: lexeme.startsWith("F") ? Tipo.FLOAT : lexeme.startsWith("S") ? Tipo.STRING : Tipo.BOOL;
 	}
 
-	public void acao25() {
+	public void acao25(Token token) {
+		for (int i = 0; i > lista_id.size(); i++) {
+			String id = lista_id.get(i);
+			if (token.getLexeme().equals(id)) {
+				lista_id.remove(i);
+				Tipo tipo = pegarTipo(token.getLexeme());
 
+				if (tipo.equals(Tipo.INT)) {
+					codigo.append("conv.i8\n");
+				}
+				
+				codigo.append("stloc ");
+				
+				codigo.append(token.getLexeme());
+				break;
+			}
+
+		}
 	}
 
-	public void acao26() {
+	public void acao27(Token token) {
+		Tipo tipo = pegarTipo(token.getLexeme());
+		
+		codigo.append("call string [mscorlib]System.Console::ReadLine()\n");
+		
+		if (tipo.equals(Tipo.INT)) {			
+			codigo.append("call int64 [mscorlib]System.Int64::Parse(string)");	
+		} else if(tipo.equals(Tipo.FLOAT)) {
+			codigo.append("call float64 [mscorlib]System.Double::Parse(string)");
+		} else if(tipo.equals(Tipo.BOOL)) {
+			codigo.append("call bool [mscorlib]System.Boolean::Parse(string)");
+		}
+		//else if(tipo.equals(Tipo.STRING)) {
+			//codigo.append("call string [mscorlib]System.Console::ReadLine()");
+		//}
 
+		codigo.append("\nstloc ");
+		codigo.append(token.getLexeme());
+		
+		lista_id.clear();
 	}
 
-	public void acao27() {
+	public void acao28() {
+		String rotuloStr = "r" + rotulo;
+		codigo.append("brfalse " + rotuloStr);
+		pilha_rotulos.push(rotulo);
+		this.rotulo = this.rotulo + 1;
+	}
 
+	public void acao29() {
+		codigo.append("r" + pilha_rotulos.pop() + ":");
+	}
+
+	public void acao30() {
+		String rotuloStr = "r" + rotulo;
+		codigo.append("br " + rotuloStr);
+		codigo.append("\nr" + pilha_rotulos.pop() + ":");
+		pilha_rotulos.push(rotulo);
+		this.rotulo = this.rotulo + 1;
+	}
+
+	public void acao31() {
+		String rotuloStr = "r" + rotulo;
+		codigo.append(rotuloStr+":");
+		pilha_rotulos.push(rotulo);
+		this.rotulo = this.rotulo + 1;
+	}
+
+	public void acao32() {
+		String rotuloStr = "r" + rotulo;
+		codigo.append("brtrue " + rotuloStr);
+		pilha_rotulos.push(rotulo);
+		this.rotulo = this.rotulo + 1;
+	}
+
+	public void acao33() {
+		int rotuloTrue = pilha_rotulos.pop();
+		codigo.append("br r" + pilha_rotulos.pop());
+		codigo.append("\nr"+rotuloTrue+":");
 	}
 
 }
