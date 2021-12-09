@@ -8,8 +8,10 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,7 +52,7 @@ public class Interface {
 	private JLabel lblArquivo;
 	private JTextArea textAreaMensagens;
 	private String[] accpetExtensions = { "txt" };
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -226,7 +228,10 @@ public class Interface {
 			
 			try {
 				sintatico.parse(lexico, semantico);
-				System.out.println(semantico.getCodigo());
+				String codigo = semantico.getCodigo();
+				
+				salvarArquivoGerado(codigo);
+				
 				textAreaMensagens.setText("programa compilado com sucesso");
 			}
 			catch ( LexicalError lexicalError ) {
@@ -305,6 +310,7 @@ public class Interface {
 						file.write(textAreaCaixaDeTexto.getText());
 						file.close();
 						lblArquivo.setText(caminhoArquivoAberto);
+						System.out.println("gerar");
 					}
 				} else {
 					FileWriter file = new FileWriter(caminhoArquivoAberto);
@@ -421,5 +427,44 @@ public class Interface {
 
 		atalhos.put(KeyStroke.getKeyStroke("F7"), "btCompilar");
 		atalhos.put(KeyStroke.getKeyStroke("F1"), "btEquipe");
+	}
+	
+	private void salvarArquivoGerado(String codigo) {
+		textAreaMensagens.setText("");
+		try {
+			if (caminhoArquivoAberto.equals("Arquivo não salvo")) {
+				if (validaManipulacaoArquivo(selecionador.showDialog(frame, "Salvar"))) {
+					FileWriter file = new FileWriter(caminhoArquivoAberto);
+					file.write(textAreaCaixaDeTexto.getText());
+					file.close();
+					lblArquivo.setText(caminhoArquivoAberto);
+					gerarExecutavel(caminhoArquivoAberto, codigo);
+				}
+			} else {
+				FileWriter file = new FileWriter(caminhoArquivoAberto);
+				file.write(textAreaCaixaDeTexto.getText());
+				file.close();
+				gerarExecutavel(caminhoArquivoAberto, codigo);
+			}
+			lblArquivo.setText(caminhoArquivoAberto);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	private void gerarExecutavel(String dir, String codigo){	
+		try {
+			String caminhoGerado = dir.replace(".txt", ".il");
+			
+			FileWriter file = new FileWriter(caminhoGerado);
+			
+			file.write(codigo);
+			file.close();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

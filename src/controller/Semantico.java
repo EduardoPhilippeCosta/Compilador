@@ -25,7 +25,6 @@ public class Semantico implements Constants {
 	public void executeAction(int action, Token token) throws SemanticError {
 		codigo.append("\n");
 		try {
-			System.out.println(action);
 			switch (action) {
 			case 1:
 				acao1();
@@ -310,25 +309,22 @@ public class Semantico implements Constants {
 		codigo.append("\nxor");
 	}
 
-	// testar para ver se ele não altera a string, ele deve literalmente adicionar o
-	// "\n" ao código
 	public void acao18() {
 		pilha_tipos.push(Tipo.STRING);
-		codigo.append("ldsrt \n");
+		codigo.append("ldsrt ");
+		codigo.append("\"\\n\"");
 	}
 
-	// testar para ver se ele não altera a string, ele deve literalmente adicionar o
-	// " " ao código
 	public void acao19() {
 		pilha_tipos.push(Tipo.STRING);
 		codigo.append("ldsrt ");
+		codigo.append("\" \"");		
 	}
 
-	// testar para ver se ele não altera a string, ele deve literalmente adicionar o
-	// "\t" ao código
 	public void acao20() {
 		pilha_tipos.push(Tipo.STRING);
-		codigo.append("ldsrt \t");
+		codigo.append("ldsrt ");
+		codigo.append("\"\\t\"");
 	}
 
 	public void acao21() throws Exception {
@@ -385,8 +381,8 @@ public class Semantico implements Constants {
 			break;
 		case "<>":
 			codigo.append("ceq");
-			codigo.append("ldc.i4 0");
-			codigo.append("ceq");
+			codigo.append("\nldc.i4 0");
+			codigo.append("\nceq");
 			break;
 		}
 
@@ -428,23 +424,17 @@ public class Semantico implements Constants {
 	}
 
 	public void acao25(Token token) {
-		for (int i = 0; i > lista_id.size(); i++) {
-			String id = lista_id.get(i);
-			if (token.getLexeme().equals(id)) {
-				lista_id.remove(i);
-				Tipo tipo = pegarTipo(token.getLexeme());
+		String id = lista_id.remove(lista_id.size() - 1);
+		
+		Tipo tipo = pegarTipo(id);
 
-				if (tipo.equals(Tipo.INT)) {
-					codigo.append("conv.i8\n");
-				}
-				
-				codigo.append("stloc ");
-				
-				codigo.append(token.getLexeme());
-				break;
-			}
-
+		if (tipo.equals(Tipo.INT)) {
+			codigo.append("conv.i8\n");
 		}
+		
+		codigo.append("stloc ");
+		
+		codigo.append(id);
 	}
 
 	public void acao27(Token token) {
@@ -459,9 +449,6 @@ public class Semantico implements Constants {
 		} else if(tipo.equals(Tipo.BOOL)) {
 			codigo.append("call bool [mscorlib]System.Boolean::Parse(string)");
 		}
-		//else if(tipo.equals(Tipo.STRING)) {
-			//codigo.append("call string [mscorlib]System.Console::ReadLine()");
-		//}
 
 		codigo.append("\nstloc ");
 		codigo.append(token.getLexeme());
